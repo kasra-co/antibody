@@ -1,8 +1,8 @@
 const path = require("path");
 const fs = require("fs");
+const Clean = require("webpack-clean");
 const webpack = require("webpack");
 const Md5Hash = require("webpack-md5-hash");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 const dependencies = Object.keys(require("./package").dependencies);
 
 const config = module.exports = {
@@ -19,13 +19,16 @@ const config = module.exports = {
 	},
 	module: {
 		loaders: [{
-			test: /\.jsx?/,
+			test: /\.jsx?$/,
 			exclude: /node_modules/,
 			loader: "babel"
+		}, {
+			test: /\.json$/,
+			loader: "json"
 		}]
 	},
 	plugins: [
-		new CleanWebpackPlugin(["dist"]),
+		new Clean(["dist/app.*.js*"], null, true),
 
 		new Md5Hash(),
 
@@ -35,27 +38,21 @@ const config = module.exports = {
 
 		new webpack.optimize.DedupePlugin(),
 
-		new webpack.optimize.UglifyJsPlugin({
-			compress: {warnings: false},
-			output: {comments: false}
-		}),
-
-		new webpack.DefinePlugin({
-			"process.env": {NODE_ENV: JSON.stringify("production")}
-		}),
+		new webpack.optimize.UglifyJsPlugin(),
 
 		function() {
 			this.plugin("done", function(stats) {
 				const assets = stats.toJson().assetsByChunkName;
 
+				console.log("markup");
 				fs.writeFileSync(
-					path.join(__dirname, "index.html"),
+					path.join(__dirname, "dist", "index.html"),
 					fs.readFileSync(path.join(__dirname, "src", "index.html")).toString().replace(
 						"{{scripts}}",
 						[
-							`<script src="/dist/${assets.vendor[0]}"></script>`,
-							`<script src="/dist/${assets.app[0]}"></script>`
-						].join("\n\t\t")
+							assets.vendor ? `<script src="/${assets.vendor[0]}"></script>` : null,
+							assets.app ? `<script src="/${assets.app[0]}"></script>` : null
+						].filter(script => !!script).join("\n\t\t")
 					)
 				);
 			});

@@ -4,12 +4,13 @@
   "description": "Article body editor with first-class Arabic support",
   "main": "src/client.js",
   "scripts": {
-    "dev:client": "webpack -w",
+    "dev:client": "webpack -w --progress --color",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dan Ross <daniel.ross@kasra.co>",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.2.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-medium-editor": "^1.6.2"
@@ -22,7 +23,9 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "clean-webpack-plugin": "^0.1.8",
+    "json-loader": "^0.5.4",
     "webpack": "^1.12.13",
+    "webpack-clean": "git+https://github.com/kasra-co/webpack-clean.git",
     "webpack-dev-server": "^1.14.1",
     "webpack-md5-hash": "0.0.4"
   }
