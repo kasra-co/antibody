@@ -2,7 +2,7 @@
   "name": "antibody",
   "version": "0.0.1",
   "description": "Article body editor with first-class Arabic support",
-  "main": "index.js",
+  "main": "src/client.js",
   "scripts": {
     "dev:client": "webpack -w",
     "test": "echo \"Error: no test specified\" && exit 1"

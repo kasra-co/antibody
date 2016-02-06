@@ -15,8 +15,7 @@ const config = module.exports = {
 		path: path.join(__dirname, "dist"),
 		publicPath: "/dist",
 		filename: "[name].[chunkhash].js",
-		chunkFilename: "[name].[chunkhash].js",
-		sourceMapFilename: "[file].map"
+		chunkFilename: "[name].[chunkhash].js"
 	},
 	module: {
 		loaders: [{
@@ -50,12 +49,13 @@ const config = module.exports = {
 				const assets = stats.toJson().assetsByChunkName;
 
 				fs.writeFileSync(
-					path.join(__dirname, "dist", "index.html"),
-					fs.readFileSync(path.join(__dirname, "index.html")).toString().replace(
+					path.join(__dirname, "index.html"),
+					fs.readFileSync(path.join(__dirname, "src", "index.html")).toString().replace(
 						"{{scripts}}",
-						Object.keys(assets).map(name => {
-							return `<script src="/${assets[name]}"></script>`;
-						}).join("\n\t\t")
+						[
+							`<script src="/dist/${assets.vendor[0]}"></script>`,
+							`<script src="/dist/${assets.app[0]}"></script>`
+						].join("\n\t\t")
 					)
 				);
 			});
