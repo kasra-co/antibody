@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
+const Md5Hash = require("webpack-md5-hash");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const dependencies = Object.keys(require("./package").dependencies);
 
@@ -26,6 +27,8 @@ const config = module.exports = {
 	},
 	plugins: [
 		new CleanWebpackPlugin(["dist"]),
+
+		new Md5Hash(),
 
 		new webpack.optimize.CommonsChunkPlugin("vendor", "[name].[chunkhash].js"),
 
