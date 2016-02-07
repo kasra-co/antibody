@@ -17,7 +17,7 @@ class App extends React.Component {
 
 		return (
 			<div>
-				<div>
+				<div>Text direction:
 					<button
 						onClick={() => this.setState({dir: swappedDir})}
 					>{swappedDir}</button>

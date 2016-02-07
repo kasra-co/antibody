@@ -40,6 +40,7 @@ The build is separated into `webpack.config.development.js`, which is optimized 
 
 ## Notes
 
+- We have no styling yet. Your build is not broken. At this stage, I would rather see what all of the elements are doing, than spend a bunch of time finessing styling and alignment.
 - Hashed build filenames are incompatible with a hot-reloading server, because new apps are being created on each rebuild, instead of one app changing (which triggers a reload from a file watching server)
 - Webpack split builds and the stock filename hashing mechanism are incompatible (https://github.com/webpack/webpack/issues/1315) because whenever any code changes in the app, all chunks change, aquiring new hashes and busting out any caches. [webpack-md5-hash](https://github.com/erm0l0v/webpack-md5-hash) does not suffer from this problem.
 - Cleaning up old hashed scripts: we want to do this just before creating new ones. The [webpack-clean](https://github.com/allexcd/webpack-clean) plugin isn't a great fit for that, because it was designed to run after the build, not before, so I forked it to add a boolean `before` parameter. This currently suffers from a filesystem [race condition](https://github.com/allexcd/webpack-clean/pull/2). The solution is probably to convert some async operation to sync, but cleanup isn't a high priority for me right now. It might be better to keep a semi-permanent record of hashed filenames and delete them each individually after creating new ones, instead of `rm`ing a glob.
