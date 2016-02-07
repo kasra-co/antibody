@@ -1,3 +1,5 @@
+"use strict"; // Webpack actually needs this for the `let` declaration below
+
 const path = require("path");
 const fs = require("fs");
 const Clean = require("webpack-clean");
@@ -5,18 +7,19 @@ const webpack = require("webpack");
 const Md5Hash = require("webpack-md5-hash");
 const dependencies = Object.keys(require("./package").dependencies);
 
+let envConfig;
+
+try {
+	envConfig = require(`./webpack.config.${process.env.NODE_ENV || "development"}.js`);
+} catch (error) {
+	envConfig = {};
+	console.warn(`No webpack build config is available for this NODE_ENV (${process.env.NODE_ENV}). Falling back to common build config. To resolve this, either leave NODE_ENV undefined to use the development build, or set NODE_ENV to match the environment in the filename of a webpack.config.[NODE_ENV].js file.`, error);
+}
+
 const config = module.exports = {
 	devtool: "source-map",
-	entry: {
-		app: "./src/client.js",
-		vendor: dependencies
-	},
-	output: {
-		path: path.join(__dirname, "dist"),
-		publicPath: "/dist",
-		filename: "[name].[chunkhash].js",
-		chunkFilename: "[name].[chunkhash].js"
-	},
+	entry: envConfig.entry,
+	output: envConfig.output,
 	module: {
 		loaders: [{
 			test: /\.jsx?$/,
@@ -28,34 +31,11 @@ const config = module.exports = {
 		}]
 	},
 	plugins: [
-		new Clean(["dist/app.*.js*"], null, true),
-
-		new Md5Hash(),
-
-		new webpack.optimize.CommonsChunkPlugin("vendor", "[name].[chunkhash].js"),
+		// Embed whitelisted env vars into client. Do not allow secrets to enter the client codebase!
+		new webpack.DefinePlugin(require("./env-whitelist").reduce((envVar, env) => {
+			return Object.assign(env, {[envVar]: process.env[envVar]});
+		})),
 
 		new webpack.NamedModulesPlugin(),
-
-		new webpack.optimize.DedupePlugin(),
-
-		new webpack.optimize.UglifyJsPlugin(),
-
-		function() {
-			this.plugin("done", function(stats) {
-				const assets = stats.toJson().assetsByChunkName;
-
-				console.log("markup");
-				fs.writeFileSync(
-					path.join(__dirname, "dist", "index.html"),
-					fs.readFileSync(path.join(__dirname, "src", "index.html")).toString().replace(
-						"{{scripts}}",
-						[
-							assets.vendor ? `<script src="/${assets.vendor[0]}"></script>` : null,
-							assets.app ? `<script src="/${assets.app[0]}"></script>` : null
-						].filter(script => !!script).join("\n\t\t")
-					)
-				);
-			});
-		}
-	]
+	].concat(envConfig.plugins || [])
 };
