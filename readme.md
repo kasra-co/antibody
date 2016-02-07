@@ -48,4 +48,4 @@ The build is separated into `webpack.config.development.js`, which is optimized 
 
 ## References
 
-- [Webpack Optimization](https://github.com/webpack/docs/wiki/optimization);
+- [Webpack Optimization](https://github.com/webpack/docs/wiki/optimization)

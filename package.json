@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server --content-base dist/ --inline --no-info --progress",
     "dev:client": "NODE_ENV=development webpack --progress",
+    "dist": "NODE_ENV=production webpack --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dan Ross <daniel.ross@kasra.co>",
