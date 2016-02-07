@@ -1,6 +1,10 @@
 # Antibody
 
-A clusterfuck of attempted solutions to article bodies. A fun clusterfuck. No, not that kind.
+A clusterfuck of attempted solutions to viral article bodies. A fun clusterfuck. No, not that kind.
+
+Prototype integrations:
+- [Medium editor](https://yabwe.github.io/medium-editor/) via [react-medium-editor](https://github.com/wangzuo/react-medium-editor), a tiny wrapper
+- [Sir Trevor](http://madebymany.github.io/sir-trevor-js/)
 
 ## Development
 
