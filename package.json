@@ -4,7 +4,8 @@
   "description": "Article body editor with first-class Arabic support",
   "main": "src/client.js",
   "scripts": {
-    "dev:client": "webpack -w --progress --color",
+    "dev": "NODE_ENV=development webpack-dev-server --content-base dist/ --inline --no-info --progress",
+    "dev:client": "NODE_ENV=development webpack --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dan Ross <daniel.ross@kasra.co>",
@@ -13,7 +14,8 @@
     "lodash": "^4.2.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-medium-editor": "^1.6.2"
+    "react-medium-editor": "^1.6.2",
+    "sir-trevor": "^0.5.0"
   },
   "devDependencies": {
     "babel": "^6.3.26",

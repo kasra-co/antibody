@@ -13,7 +13,7 @@ const config = module.exports = {
 	},
 	output: {
 		path: path.join(__dirname, "dist"),
-		publicPath: "/dist",
+		publicPath: "/",
 		filename: "[name].[chunkhash].js",
 		chunkFilename: "[name].[chunkhash].js"
 	},
@@ -34,7 +34,6 @@ const config = module.exports = {
 			this.plugin("done", function(stats) {
 				const assets = stats.toJson().assetsByChunkName;
 
-				console.log("markup");
 				fs.writeFileSync(
 					path.join(__dirname, "dist", "index.html"),
 					fs.readFileSync(path.join(__dirname, "src", "index.html")).toString().replace(
