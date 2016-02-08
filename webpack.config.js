@@ -31,6 +31,7 @@ const config = module.exports = {
 		}]
 	},
 	plugins: [
+
 		// Embed whitelisted env vars into client. Do not allow secrets to enter the client codebase!
 		new webpack.DefinePlugin(require("./env-whitelist").reduce((envVar, env) => {
 			return Object.assign(env, {[envVar]: process.env[envVar]});

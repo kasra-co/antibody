@@ -28,6 +28,7 @@ class App extends React.Component {
 					text={_.get(this, "state.text", "Edit me!")}
 					onChange={((text) => {
 						this.setState({text: text});
+						console.log("medium text", text);
 					})}
 				/>
 				<h2>Sir Trevor Editor</h2>
